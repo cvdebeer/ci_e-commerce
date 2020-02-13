@@ -1,4 +1,5 @@
 {% load staticfiles %}
+<!DOCTYPE html>
 <html lang="en">
 <!--This base.html is different to the tutorials- have copied over j-query but left the rest for now -->
 <head>
@@ -6,16 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css">
-
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title>{% block page_title %}{% endblock %}</title>
+    <title>Ecommerce</title>
 </head>
 
 <body>
     <nav class='navbar navbar-default'>
-        <ul class="nav navbar-nav">
+        <ul class='nav navbar-nav'>
             {% if user.is_authenticated %}
             <li><a href="{% url 'logout' %}">Logout</a></li>
             <li><a href="{% url 'profile' %}">Profile</a></li>
@@ -23,6 +24,13 @@
             <li><a href="{% url 'login' %}">Login</a></li>
             <li><a href="{% url 'registration' %}">Register</a></li>
             {% endif %}
+            <li>
+                <a href='{% url 'view_cart' %}'>
+                    <i class='fa fa-shipping-cart'></i>cart
+                    {% if product_count > 0 %}
+                    <label class='badge badge-warning'>{{ product_count }}</label>
+                    {% endif %}
+            </li>
         </ul>
     </nav>
    <h1>{% block page_heading %}{% endblock %}</h1>
@@ -33,8 +41,15 @@
         {% endfor %}
     </div>
     {% endif %}
+    <div class='container'>
+        <div class='display'>
+            <form action='{% url 'search' %}' method='get'>
+                <input type='text' name='q'>
+                <button type='submit'>Search</button>
+            </form>
+        </class>
     {% block content %}{% endblock %}
-    
+    </div>
 </body>
 
 </html>
